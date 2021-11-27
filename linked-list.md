@@ -4,6 +4,7 @@
 + [Middle of the Linked List](#middle-of-the-linked-list)
 + [Palindrome Linked List](#palindrome-linked-list)
 + [Merge Two Sorted Lists](#merge-two-sorted-lists)
++ [Intersection of Two Linked Lists](#intersection-of-two-linked-lists)
 <!---->
 
 ## Reverse linked list
@@ -325,6 +326,83 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         node.next = l2;
     }
     return head.next;
+}
+
+```
+
+
+## Intersection of Two Linked Lists
+
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+<details>
+    <summary> Test Cases </summary>
+
+``` java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class LeetcodeSolutionTest {
+    private LeetcodeSolution solution;
+
+    @BeforeEach
+    void setSolution() {
+        solution = new LeetcodeSolution();
+    }
+
+    @Test
+    void testGetIntersectionNode() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(2, 3, 4));
+        ListNode l2 = ListNodeHandler.buildList(List.of(5, 6));
+        assertEquals(null, solution.getIntersectionNode(l1, l2));
+    }
+
+    @Test
+    void testGetIntersectionNode2() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(6, 7, 8));
+        ListNode l2 = ListNodeHandler.buildList(List.of(1, 2, 3, 4, 5, 6, 7, 8));
+        assertEquals(6, solution.getIntersectionNode(l1, l2));
+    }
+
+
+}
+```
+```java
+
+class ListNodeHandler {
+    static ListNode buildList(List<Integer> src) {
+        ListNode prev = null;
+        ListNode node = null;
+        int d = src.size() - 1;
+        for (int i = d; i >= 0; i--) {
+            node = new ListNode(src.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+``` 
+</details>
+
+```java
+
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
+    ListNode currentA = headA;
+    if(headA==null || headB==null) return null;
+    while(currentA!=null){
+        ListNode   currentB=headB;
+        if(currentA==currentB) return currentA;
+        while(currentB.next!=null && currentB.next!=currentA) currentB=currentB.next;
+        if(currentB.next==null) currentA=currentA.next;
+        else return currentA;
+    }
+    return currentA;
 }
 
 ```
