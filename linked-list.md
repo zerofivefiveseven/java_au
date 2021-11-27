@@ -2,6 +2,7 @@
 
 + [Reverse linked list](#reverse-linked-list)
 + [Middle of the Linked List](#middle-of-the-linked-list)
++ [Palindrome Linked List](#palindrome-linked-list)
 <!---->
 
 ## Reverse linked list
@@ -71,6 +72,7 @@ public ListNode helper(ListNode head, ListNode prev){
         }
 }
 ```
+
 
 ## Middle of the Linked List
 
@@ -143,3 +145,85 @@ public ListNode middleNode(ListNode head) {
         return s;
     }
 ```
+
+
+## Palindrome Linked List
+
+https://leetcode.com/problems/palindrome-linked-list/
+
+<details>
+    <summary> Test Cases </summary>
+
+``` java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class LeetcodeSolutionTest {
+    private LeetcodeSolution solution;
+
+    @BeforeEach
+    void setSolution() {
+        solution = new LeetcodeSolution();
+    }
+
+    @Test
+    void testIsPalindrome() {
+        assertTrue(solution.isPalindrome(ListNodeHandler.buildList(List.of(3))));
+    }
+
+    @Test
+    void testIsNotPalindrome(){
+        assertFalse(solution.isPalindrome(ListNodeHandler.buildList(List.of(100, 2, 10, 20))));
+    }
+
+    @Test
+    void testNullList(){
+        assertTrue(solution.isPalindrome(ListNodeHandler.buildList(List.of())));
+    }
+    
+}
+```
+```java
+class ListNodeHandler{
+    static ListNode buildList(List<Integer> src) {
+        ListNode prev = null;
+        ListNode node = null;
+        int d = src.size() - 1;
+        for (int i = d; i >= 0; i--) {
+            node = new ListNode(src.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+``` 
+</details>
+
+```java
+
+class Solution {
+
+    private ListNode frontPointer;
+
+    private boolean recursivelyCheck(ListNode currentNode) {
+        if (currentNode != null) {
+            if (!recursivelyCheck(currentNode.next)) return false;
+            if (currentNode.val != frontPointer.val) return false;
+            frontPointer = frontPointer.next;
+        }
+        return true;
+    }
+
+    public boolean isPalindrome(ListNode head) {
+        frontPointer = head;
+        return recursivelyCheck(head);
+    }
+}
+```
+
+
