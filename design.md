@@ -2,6 +2,7 @@
 
 + [Min Stack](#min-stack)
 + [Implement Stack using Queues](#implement-stack-using-queues)
++ [Implement Queue using Stacks](#implement-queue-using-stacks)
 <!---->
 
 ## Min Stack
@@ -127,7 +128,6 @@ https://leetcode.com/problems/implement-stack-using-queues/
     <summary> Test Cases </summary>
 
 ``` java
-package com.github.stack;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -190,8 +190,7 @@ import org.junit.Test;
 
 ```java
 
-
-cimport java.util.LinkedList;
+import java.util.*;
 
 public class ImplementStackUsingQueues {
 
@@ -261,5 +260,92 @@ public class ImplementStackUsingQueues {
 		return firstQueue.isEmpty() && secondQueue.isEmpty();
 	}
 }
+```
+
+## Implement Queue using Stacks
+
+https://leetcode.com/problems/implement-queue-using-stacks/
+
+<details>
+    <summary> Test Cases </summary>
+
+``` java
+import java.util.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ImplementQueueUsingStacks {
+	@org.junit.Test
+	public void test1() {
+		MyQueue queue = new MyQueue();
+
+		queue.push(1);
+		queue.push(2);
+		System.out.println(queue.peek()); // returns 1
+		System.out.println(queue.pop()); // returns 1
+		System.out.println(queue.empty()); // returns false
+	}
+
+-----------------------------------
+LeetCode_232. Implement Queue using Stacks
+https://blog.51cto.com/u_15127557/3377835
+```
+</details>
 
 
+```java
+import java.util.*;
+class MyQueue {
+    Stack<Integer> mainStack, helperStack;
+
+
+    public MyQueue() {
+        mainStack = new Stack<>();
+        helperStack = new Stack<>();
+    }
+
+
+    public void push(int x) {
+        mainStack.push(x);
+    }
+
+   
+    public int pop() {
+        if(mainStack.size() == 0) {
+            return -1;
+        } else {
+            while(mainStack.size() != 1) {
+                helperStack.push(mainStack.pop());
+            }
+            int data = mainStack.pop();
+            while(helperStack.size() > 0) {
+                mainStack.push(helperStack.pop());
+            }
+            return data;
+        }
+    }
+
+
+    public int peek() {
+        if(mainStack.size() == 0) {
+            return -1;
+        } else {
+            while(mainStack.size() != 1) {
+                helperStack.push(mainStack.pop());
+            }
+            int data = mainStack.peek();
+            while(helperStack.size() > 0) {
+                mainStack.push(helperStack.pop());
+            }
+            return data;
+        }
+    }
+
+
+    public boolean empty() {
+        return mainStack.isEmpty();
+    }
+}
+```
