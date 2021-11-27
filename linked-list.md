@@ -406,3 +406,119 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
 }
 
 ```
+
+
+## Merge Sort
+
+https://leetcode.com/problems/sort-list/
+
+<details>
+    <summary> Test Cases </summary>
+
+``` java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class LeetcodeSolutionTest {
+    private LeetcodeSolution solution;
+
+    @BeforeEach
+    void setSolution() {
+        solution = new LeetcodeSolution();
+    }
+
+    @Test
+    void testSortList() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(4, 2, 1, 3));
+        ListNode res = ListNodeHandler.buildList(List.of(1, 2, 3, 4));
+        assertEquals(res, solution.sortList(l1));
+    }
+    
+    @Test
+    void testSortList() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(-1,5,3,4,0));
+        ListNode res = ListNodeHandler.buildList(List.of(-1,0,3,4,5));
+        assertEquals(res, solution.sortList(l1));
+    }
+
+    @Test
+    void testSortNullList() {
+        assertNull(solution.sortList(null));
+    }
+
+    @Test
+    void testSortEqList() {
+        ListNode res = ListNodeHandler.buildList(List.of(1, 1, 1, 1));
+        ListNode l1 = ListNodeHandler.buildList(List.of(1, 1, 1, 1));
+        assertEquals(res, solution.sortList(l1));
+    }
+
+}
+```
+```java
+
+class ListNodeHandler {
+    static ListNode buildList(List<Integer> src) {
+        ListNode prev = null;
+        ListNode node = null;
+        int d = src.size() - 1;
+        for (int i = d; i >= 0; i--) {
+            node = new ListNode(src.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+```
+</details>
+
+```java
+
+public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null)
+        return head;
+
+        ListNode prev = null, slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+        prev = slow;
+        slow = slow.next;
+        fast = fast.next.next;
+        }
+
+        prev.next = null;
+
+        ListNode l1 = sortList(head);
+        ListNode l2 = sortList(slow);
+
+        return merge(l1, l2);
+        }
+ListNode merge(ListNode l1, ListNode l2) {
+        ListNode l = new ListNode(0), p = l;
+
+        while (l1 != null && l2 != null) {
+        if (l1.val < l2.val) {
+        p.next = l1;
+        l1 = l1.next;
+        } else {
+        p.next = l2;
+        l2 = l2.next;
+        }
+        p = p.next;
+        }
+
+        if (l1 != null)
+        p.next = l1;
+
+        if (l2 != null)
+        p.next = l2;
+
+        return l.next;
+        }
+
+```
