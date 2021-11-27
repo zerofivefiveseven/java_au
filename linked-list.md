@@ -3,6 +3,7 @@
 + [Reverse linked list](#reverse-linked-list)
 + [Middle of the Linked List](#middle-of-the-linked-list)
 + [Palindrome Linked List](#palindrome-linked-list)
++ [Merge Two Sorted Lists](#merge-two-sorted-lists)
 <!---->
 
 ## Reverse linked list
@@ -206,24 +207,124 @@ class ListNodeHandler{
 
 ```java
 
-class Solution {
 
-    private ListNode frontPointer;
+public ListNode frontPointer;
 
-    private boolean recursivelyCheck(ListNode currentNode) {
-        if (currentNode != null) {
-            if (!recursivelyCheck(currentNode.next)) return false;
-            if (currentNode.val != frontPointer.val) return false;
-            frontPointer = frontPointer.next;
-        }
-        return true;
+public boolean recursivelyCheck(ListNode currentNode) {
+    if (currentNode != null) {
+        if (!recursivelyCheck(currentNode.next)) return false;
+        if (currentNode.val != frontPointer.val) return false;
+        frontPointer = frontPointer.next;
     }
-
-    public boolean isPalindrome(ListNode head) {
-        frontPointer = head;
-        return recursivelyCheck(head);
-    }
+    return true;
 }
+
+public boolean isPalindrome(ListNode head) {
+    frontPointer = head;
+    return recursivelyCheck(head);
+}
+
 ```
 
 
+
+
+## Merge Two Sorted Lists
+
+https://leetcode.com/problems/merge-two-sorted-lists/
+
+<details>
+    <summary> Test Cases </summary>
+
+``` java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+class LeetcodeSolutionTest {
+    private LeetcodeSolution solution;
+
+    @BeforeEach
+    void setSolution() {
+        solution = new LeetcodeSolution();
+    }
+
+    @Test
+    void testMergeTwoLists() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(1, 2));
+        ListNode l2 = ListNodeHandler.buildList(List.of(3, 4));
+        ListNode res = ListNodeHandler.buildList(List.of(1, 2, 3, 4));
+        assertEquals(res, solution.mergeTwoLists(l1, l2));
+    }
+
+    @Test
+    void testMergeOneList() {
+        ListNode l2 = ListNodeHandler.buildList(List.of(3, 4));
+        ListNode res = ListNodeHandler.buildList(List.of(3, 4));
+        assertEquals(res, solution.mergeTwoLists(null, l2));
+    }
+
+    @Test
+    void testMergeEqualLists() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(1, 2, 3));
+        ListNode res = ListNodeHandler.buildList(List.of(1, 1, 2, 2, 3, 3));
+        assertEquals(res, solution.mergeTwoLists(l1, l1));
+    }
+    
+    @Test
+    void testMergeTwoLists() {
+        ListNode l1 = ListNodeHandler.buildList(List.of(1, 2, 4));
+        ListNode l2 = ListNodeHandler.buildList(List.of(1, 3, 4));
+        ListNode res = ListNodeHandler.buildList(List.of(1, 1, 2, 3, 4, 4));
+        assertEquals(res, solution.mergeTwoLists(l1, l2));
+    }
+
+}
+
+```
+```java
+class ListNodeHandler {
+    static ListNode buildList(List<Integer> src) {
+        ListNode prev = null;
+        ListNode node = null;
+        int d = src.size() - 1;
+        for (int i = d; i >= 0; i--) {
+            node = new ListNode(src.get(i), prev);
+            prev = node;
+        }
+        return node;
+    }
+}
+``` 
+</details>
+
+```java
+
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    ListNode node = new ListNode();
+    ListNode head = node;
+    while (l1!=null && l2!=null){
+        if(l1.val<=l2.val){
+            node.next = l1;
+            l1 = l1.next;
+        } else {
+            node.next = l2;
+            l2 = l2.next;
+        }
+        node = node.next;
+    }
+
+    if(l1 != null){
+        node.next = l1;
+    }
+    if(l2 != null){
+        node.next = l2;
+    }
+    return head.next;
+}
+
+```
